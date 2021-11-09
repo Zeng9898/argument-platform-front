@@ -7,7 +7,7 @@ const options1 = [{value:'安全面', label:'安全面'}, {value:'科學與技�
 const options2 = [{value:'提出論點或主張(CA1)', label:'提出論點或主張(CA1)'}, {value:'提出疑問(CA2)', label:'提出疑問(CA2)'}, {value: '提出挑戰(CA3)', label:'提出挑戰(CA3)'}, {value: '進行推論(CA4)', label:'進行推論(CA4)'}, {value: '表達支持(CA5)', label:'表達支持(CA5)'}, {value: '其他(CA6)', label:'其他(CA6)'}];
 const animatedComponents = makeAnimated();
 
-function Modal({ setOpenModal }) {
+function Modal({ datas, setOpenModal }) {
   
   const data = [
     '使用核能發電，不但成本低，更能快速發電，又不會受到氣候的影響，可以如此快速發電，除了核能發電廠外，又有什麼可以代替它呢？',
@@ -28,7 +28,7 @@ function Modal({ setOpenModal }) {
           </button>
         </div>
         <div className="body">
-          <p>{data[0]}</p>
+          <p>{datas}</p>
         </div>
         <h4>論點面向</h4><Select 
           components={animatedComponents}
