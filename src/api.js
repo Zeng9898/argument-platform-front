@@ -7,4 +7,4 @@ const tagRequest = axios.create({
 });
 
 
-export const apiUserLogin = data => tagRequest.post('/users/1/posts',data);
+export const tagUpload = data => tagRequest.post('/api',data);

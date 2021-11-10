@@ -2,15 +2,16 @@ import React from "react";
 import "./modal.css";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import { tagUpload } from '../api';
 
-const options1 = [{value: '安全面', label: '安全面'}, {value: '科學與技術面', label: '科學與技術面'}, {value: '環保面', label: '環保面'}, {value: '社會面', label: '社會面'}, {value: '經濟面', label: '經濟面'}];
-const options2 = [{value: '提出論點或主張(CA1)', label: '提出論點或主張(CA1)'}, {value:'提出疑問(CA2)', label: '提出疑問(CA2)'}, {value: '提出挑戰(CA3)', label: '提出挑戰(CA3)'}, {value: '進行推論(CA4)', label: '進行推論(CA4)'}, {value: '表達支持(CA5)', label: '表達支持(CA5)'}, {value: '其他(CA6)', label: '其他(CA6)'}];
+const options1 = [{ value: '安全面', label: '安全面' }, { value: '科學與技術面', label: '科學與技術面' }, { value: '環保面', label: '環保面' }, { value: '社會面', label: '社會面' }, { value: '經濟面', label: '經濟面' }];
+const options2 = [{ value: '提出論點或主張(CA1)', label: '提出論點或主張(CA1)' }, { value: '提出疑問(CA2)', label: '提出疑問(CA2)' }, { value: '提出挑戰(CA3)', label: '提出挑戰(CA3)' }, { value: '進行推論(CA4)', label: '進行推論(CA4)' }, { value: '表達支持(CA5)', label: '表達支持(CA5)' }, { value: '其他(CA6)', label: '其他(CA6)' }];
 const animatedComponents = makeAnimated();
 
 export default function Modal({ object: { data, edited }, setOpenModal }) {
   let perspective = [];
   let purpose = [];
-  function handleChangeOpt1(value){
+  function handleChangeOpt1(value) {
     perspective = [];
     value.map(item => {
       perspective.push(item.value);
@@ -18,7 +19,7 @@ export default function Modal({ object: { data, edited }, setOpenModal }) {
     console.log("perspective:", perspective);
   }
 
-  function handleChangeOpt2(value){
+  function handleChangeOpt2(value) {
     purpose = [];
     value.map(item => {
       purpose.push(item.value);
@@ -26,15 +27,25 @@ export default function Modal({ object: { data, edited }, setOpenModal }) {
     console.log("purpose:", purpose);
   }
 
-  function handleSubmit(){
-    apiUserLogin(data)
-        .then(res=>{
-            console.log(res);
+  function handleSubmit() {
+    console.log(data, perspective, purpose);
+    async function postTag() {
+      const requestOptions = {
+        method: 'POST',
+        body: new URLSearchParams({
+          userId:"6182a2f9929d70f72eb7f7df",
+          DDId:"6182a2f9929d70f72eb7f7df",
+          dataName: data,
+          perspective: perspective,
+          purpose: purpose
         })
-        .catch(err=>{
-            setpending(false);
-            console.log(err);
-        })
+      };
+      const response = await fetch('http://localhost:8080/api', requestOptions);
+      const resData = await response.json();
+      console.log(resData);
+    }
+    postTag();
+    setOpenModal(false);
   }
 
   return (
@@ -42,14 +53,14 @@ export default function Modal({ object: { data, edited }, setOpenModal }) {
       <div className="modalContainer">
         <div className="titleCloseBtn">
           <button onClick={() => { setOpenModal(false); }}>
-            X 
+            X
           </button>
         </div>
         <div className="body">
           {data}
         </div>
         <h4>論點面向</h4><Select components={animatedComponents} isMulti options={options1} onChange={handleChangeOpt1} />
-        <h4>發言目的</h4><Select components={animatedComponents} isMulti options={options2} onChange={handleChangeOpt2}/>
+        <h4>發言目的</h4><Select components={animatedComponents} isMulti options={options2} onChange={handleChangeOpt2} />
         <div className="footer">
           <button onClick={() => { setOpenModal(false); }} id="cancelBtn" onClick={handleSubmit}>
             Save
