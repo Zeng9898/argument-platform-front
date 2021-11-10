@@ -8,6 +8,35 @@ const options2 = [{value: '提出論點或主張(CA1)', label: '提出論點或�
 const animatedComponents = makeAnimated();
 
 export default function Modal({ object: { data, edited }, setOpenModal }) {
+  let perspective = [];
+  let purpose = [];
+  function handleChangeOpt1(value){
+    perspective = [];
+    value.map(item => {
+      perspective.push(item.value);
+    });
+    console.log("perspective:", perspective);
+  }
+
+  function handleChangeOpt2(value){
+    purpose = [];
+    value.map(item => {
+      purpose.push(item.value);
+    });
+    console.log("purpose:", purpose);
+  }
+
+  function handleSubmit(){
+    apiUserLogin(data)
+        .then(res=>{
+            console.log(res);
+        })
+        .catch(err=>{
+            setpending(false);
+            console.log(err);
+        })
+  }
+
   return (
     <div className="modalBackground">
       <div className="modalContainer">
@@ -19,10 +48,10 @@ export default function Modal({ object: { data, edited }, setOpenModal }) {
         <div className="body">
           {data}
         </div>
-        <h4>論點面向</h4><Select components={animatedComponents} isMulti options={options1} />
-        <h4>發言目的</h4><Select components={animatedComponents} isMulti options={options2} />
+        <h4>論點面向</h4><Select components={animatedComponents} isMulti options={options1} onChange={handleChangeOpt1} />
+        <h4>發言目的</h4><Select components={animatedComponents} isMulti options={options2} onChange={handleChangeOpt2}/>
         <div className="footer">
-          <button onClick={() => { setOpenModal(false); }} id="cancelBtn" >
+          <button onClick={() => { setOpenModal(false); }} id="cancelBtn" onClick={handleSubmit}>
             Save
           </button>
         </div>
